@@ -118,16 +118,21 @@ declare global {
     get isEditable(): boolean;
 
     /**
+     * @inheritDoc
      * @param options - (default: `{}`)
      */
     override getData(options?: Partial<Options>): MaybePromise<object>;
 
+    /** @inheritDoc */
     protected override _render(force?: boolean, options?: Application.RenderOptions<Options>): Promise<void>;
 
+    /** @inheritDoc */
     protected override _renderInner(data: object): Promise<JQuery>;
 
+    /** @inheritDoc */
     protected override _activateCoreListeners(html: JQuery): void;
 
+    /** @inheritDoc */
     override activateListeners(html: JQuery): void;
 
     /**
@@ -227,15 +232,12 @@ declare global {
 
     /**
      * Configure ProseMirror plugins for this sheet.
-     * @param name    - The name of the editor.
-     * @param options - Additional options to configure the plugins.
+     * @param name   - The name of the editor.
+     * @param remove - Whether the editor should destroy itself on save.
      */
     protected _configureProseMirrorPlugins(
       name: string,
-      options: {
-        /** Whether the editor should destroy itself on save. */
-        remove: boolean;
-      },
+      { remove }?: { remove?: boolean },
     ): {
       menu: ReturnType<(typeof ProseMirrorMenu)["build"]>;
       keyMaps: ReturnType<(typeof ProseMirrorKeyMaps)["build"]>;
@@ -256,7 +258,7 @@ declare global {
     protected _getFilePickerOptions(event: PointerEvent): FilePickerOptions;
 
     /**
-     * @param options - (default: `{}`)
+     * @inheritDoc
      */
     override close(options?: FormApplication.CloseOptions): Promise<void>;
 
@@ -335,11 +337,10 @@ declare global {
   > extends FormApplication<Options, ConcreteDocument> {
     /**
      * @param object  - A Document instance which should be managed by this form.
-     *                  (default: `{}`)
      * @param options - Optional configuration parameters for how the form behaves.
      *                  (default: `{}`)
      */
-    constructor(object?: ConcreteDocument, options?: Partial<Options>);
+    constructor(object: ConcreteDocument, options?: Partial<Options>);
 
     /** The list of handlers for secret block functionality. */
     protected _secrets: HTMLSecret<ConcreteDocument>[];
@@ -423,6 +424,12 @@ declare global {
      * @internal
      */
     protected _onConfigureSheet(event: JQuery.ClickEvent): void;
+
+    /**
+     * Handle changing a Document's image.
+     * @param event - The click event.
+     */
+    protected _onEditImage(event: JQuery.ClickEvent): Promise<FilePicker.BrowseResult | undefined>;
 
     protected override _updateObject(event: Event, formData: object): Promise<unknown>;
   }
