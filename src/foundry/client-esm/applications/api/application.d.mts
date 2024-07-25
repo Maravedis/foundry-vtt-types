@@ -97,7 +97,14 @@ declare namespace ApplicationV2 {
 
   export type FormSubmission = () => Promise<void>;
 
-  export interface Tab {}
+  export interface Tab {
+    id: string;
+    group: string;
+    icon: string;
+    label: string;
+    active: boolean;
+    cssClass: string;
+  }
 }
 
 /**
